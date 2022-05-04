@@ -21,7 +21,7 @@ export const StarWars = () => {
 
     return (
         <ListGroup>
-            {(list.length > 0) ? renderList : <Spinner />}
+            {(list.length > 0) ? renderList : <Spinner data-testid="custom-element" />}
         </ListGroup>
     )
 }

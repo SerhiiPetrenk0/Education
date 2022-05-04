@@ -1,48 +1,32 @@
-/* eslint-disable testing-library/no-container */
-/* eslint-disable testing-library/render-result-naming-convention */
-/* eslint-disable testing-library/await-async-utils */
-/* eslint-disable testing-library/no-node-access */
 import React from 'react'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { render, waitFor, screen } from '@testing-library/react';
 import { StarWars } from '../components/StarWars'
-import { mockData } from '../test/MockData'
+import { mockData } from './MockData'
 
-let server  = setupServer(
-  rest.get('https://swapi.dev/api/people/', (req, res, ctx) => {
-    return res(ctx.json([mockData]))
+const server = setupServer(
+  rest.get('http://swapi.dev/api/people/', (req, res, ctx) => {
+    return res(ctx.json(mockData))
   }),
 )
 
-describe('renders a book data', () => {
+describe('StarWars component', () => {
+  beforeAll(() => server.listen({ onUnhandledRequest: "bypass" }));
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
-  console.log(server  )
-      
-      beforeAll(() => server.listen())
-      afterAll(() => server.close())
-      
-      it('renders a book data2', async() => {
-        server.use(
-          rest.get('https://swapi.dev/api/people/', (req, res, ctx) => {
-            return res(ctx.status(200), ctx.json([mockData]))
-          }),
-        )
-        const result = render(<StarWars />)
-        screen.debug()
-        const spinner = result.container.querySelector('.spinner-undefined')
-        expect(spinner).toBeInTheDocument()
-        await waitFor(() => result.container.querySelector('.list-group-item'))
-        screen.debug()
-        expect(result.container.querySelectorAll('.list-group-item')).toHaveLength(10) 
-  
-      })
-
-    it('renders a book data', () => {
-      const result = render(<StarWars />)
-      const spinner = result.container.querySelector('.spinner-undefined')
-      expect(spinner).toBeInTheDocument()
-
+  it('should render list', async () => {
+    render(<StarWars />)
+    await waitFor(() => {
+      expect(screen.getByText(/Luke Skywalker/)).toBeInTheDocument()
     })
+  })
+
+  it('should render spinner', () => {
+    render(<StarWars />)
+    const spinner = screen.getByTestId('custom-element')
+    expect(spinner).toBeInTheDocument()
+  })
 })
 
