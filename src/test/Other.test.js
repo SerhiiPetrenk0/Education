@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { render, fireEvent, screen, renderHook } from '@testing-library/react';
+import React from 'react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { NameForm } from '../components/Form'
 import userEvent from '@testing-library/user-event';
 
@@ -35,3 +35,4 @@ describe('checkbox', () => {
 
     })
 });
+
