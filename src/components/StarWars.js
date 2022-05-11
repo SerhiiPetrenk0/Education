@@ -1,12 +1,28 @@
 import React, { useState, useEffect }  from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-bootstrap4';
+import {
+  SelectionState,
+  PagingState,
+  IntegratedPaging,
+  IntegratedSelection,
+  SortingState,
+  IntegratedSorting,
+} from '@devexpress/dx-react-grid';
+import { 
+  Grid, 
+  Table, 
+  TableHeaderRow,
+  TableSelection,
+  PagingPanel, 
+} from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
-import  ArrowBottom from './img/ArrowBottom'
+import  ArrowBottom from './img/ArrowBottom';
+
 export const StartWars = () => {
   const [ list, setList ] = useState([])
   const renderList = list.map((item, index) => <ListGroup.Item style={{background: item.eye_color}} key={index}>{item.name}</ListGroup.Item>)
-
+  const [sorting, setSorting] = useState([{ columnName: 'height', direction: 'asc' }]);
+  const [selection, setSelection] = useState([]);
   const columns = [
     { name: 'id', title: 'ID' },
     { name: 'name', title: 'Name' },
@@ -92,7 +108,7 @@ export const StartWars = () => {
           type="button"
           className="btn btn-outline-secondary"
           style={{ margin: '-7px 5px' }}
-          onClick={() => alert('Custom action')}
+          onClick={() => alert('hi')}
         >
           <ArrowBottom />
         </button>
@@ -105,6 +121,21 @@ export const StartWars = () => {
         rows={test}
         columns={columns}
       >
+        <SelectionState
+          selection={selection}
+          onSelectionChange={setSelection}
+        />
+        <PagingState
+          defaultCurrentPage={0}
+          pageSize={3}
+        />
+        <SortingState
+          sorting={sorting}
+          onSortingChange={setSorting}
+        />
+        <IntegratedSorting />
+        <IntegratedSelection />
+        <IntegratedPaging />
         <Table 
           rowComponent={TableRow}
           cellComponent={Cell}
@@ -113,8 +144,11 @@ export const StartWars = () => {
           
         />
         <TableHeaderRow
+          showSortingControls
           contentComponent={TableHeaderContent}
         />
+        <TableSelection showSelectAll />
+        <PagingPanel />
       </Grid>
     </div>
   )
