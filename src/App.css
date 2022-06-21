@@ -1,7 +1,14 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+justify-content: space-around;
 }
-
+.Items {
+  width: 24%;
+  margin-top: 1%;
+  background-color:#ebebeb;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
